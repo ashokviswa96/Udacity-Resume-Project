@@ -27,18 +27,10 @@ var formattedlocation = HTMLlocation.replace("%data%", bio.contacts.location);
 var formattedWelcome = HTMLwelcomeMsg.replace("%data%", bio.welcomeMessage);
 var formattedGenericContacts=HTMLcontactGeneric.replace("%contact%",bio.contacts);
 bio.display = function() {
-   $("#header").prepend(formattedName + formattedRole);
-
-   $("#topContacts").append(formattedmobile);
-   $("#topContacts").append(formattedemail);
-   $("#topContacts").append(formattedgithub);
-   $("#topContacts").append(formattedtwitter);
-   $("#topContacts").append(formattedlocation);
-   $("#header").append(formattedbioPic);
-   $("#header").append(formattedWelcome);
+   $("#topContacts , #footerContacts").append(formattedmobile,formattedemail,formattedgithub,formattedtwitter,formattedlocation);
+   $("#header").prepend(formattedName + formattedRole).append(formattedbioPic,formattedWelcome);
    var buttonLink = '<button type="button" id="download-resume"><a href="my-resume.docx"  download>download resume</a></button>';
-   $("#download").append("<p>Here is a link to download resume in docx format:</p>");
-   $("#download").append(buttonLink);
+   $("#download").append("<p>Here is a link to download resume in docx format:</p>",buttonLink);
    if (bio.skills.length > 0) {
       $("#header").append(HTMLskillsStart);
       for ( var i = 0; i < bio.skills.length; i++) {
@@ -79,6 +71,8 @@ work.display = function displayWork() {
       }
    }
 };
+//Object "education" consisting of the details about education
+
 var education = {
    "schools": [{
       "name": "Jawahar Higher Secondary School",
@@ -92,7 +86,7 @@ var education = {
       "location": "Karanodai",
       "degree": "B.E.",
       "majors": ["Electronics & Communication Engineering"],
-      "dates": "2013-2017 ",
+      "dates": "2013-2017",
       "url": "http://velammalitech.edu.in/"
    }],
    "onlineCourses": [{
@@ -113,8 +107,11 @@ education.display = function() {
       $(".education-entry:last").append(formattedSchoolDates);
       var formmattedschoolLocation = HTMLschoolLocation.replace("%data%", education.schools[i].location);
       $(".education-entry:last").append(formmattedschoolLocation);
-      var formattedschoolMajor = HTMLschoolMajor.replace("%data%", education.schools[i].majors);
-      $(".education-entry:last").append(formattedschoolMajor);
+      var formattedschoolMajor = [];
+      for (var k=0;k<education.schools[i].majors.length;k++){
+      formattedschoolMajor[k] = HTMLschoolMajor.replace("%data%", education.schools[i].majors[k]);
+      $(".education-entry:last").append(formattedschoolMajor[k]);
+    }
    }
    $(".education-entry:last").append(HTMLonlineClasses);
    for (i = 0; i < education.onlineCourses.length; i++) {
@@ -129,6 +126,7 @@ education.display = function() {
       $(".education-entry:last").append(onurl);
    }
 };
+//object 'projects' containing info about projects.
 var projects = {
    "projects": [{
       "title": "Automated Aquaponic System",
@@ -158,32 +156,27 @@ projects.display = function() {
    }
 };
 
-function footerContacts() {
-   $("#footerContacts").append(formattedmobile);
-   $("#footerContacts").append(formattedemail);
-   $("#footerContacts").append(formattedgithub);
-   $("#footerContacts").append(formattedtwitter);
-   $("#footerContacts").append(formattedlocation);
-}
-work.display();
-education.display();
-projects.display();
-bio.display();
-footerContacts();
-//to create the nav bar
-var createbar = '<ul class="nav"></ul>';
-$(createbar).insertAfter("#skills");
 var navList = {
    "navItems": ["workExperience", "education", "projects", "mapDiv"],
    "navNames": ["Work", "Education", "Projects", "Location"]
 };
-var listItem = '<li class="nav-item"><a href="#%data%">';
+  //to create the nav bar
 navList.display = function() {
+  var createbar = '<ul class="nav"></ul>';
+  var listItem = '<li class="nav-item"><a href="#%data%">';
+  $(createbar).insertAfter("#skills");
    for ( var i = 0; i < navList.navItems.length; i++) {
       var formatlist = listItem.replace("%data%", navList.navItems[i]);
-      $(".nav").append(formatlist + navList.navNames[i] + '</a></li');
+      $(".nav").append(formatlist + navList.navNames[i] + '</a></li>');
    }
 };
-navList.display();
+//to invoke the display functions for all the section of the page.
+work.display();
+education.display();
+projects.display();
+bio.display();
+
 //to add google map
 $("#mapDiv").append(googleMap);
+//to add the navigation bar
+navList.display();
