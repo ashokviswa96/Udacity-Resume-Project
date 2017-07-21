@@ -20,9 +20,9 @@ a {
 .education-entry,
 .work-entry,
 .project-entry {
-    margin-left: 5%;
-    margin-top: 1%;
-    margin-right: 5%;
+    margin-left: 4%;
+    margin-top: 2%;
+    margin-right: 4%;
 }
 .project-entry {
   background-color: #ddccff;
